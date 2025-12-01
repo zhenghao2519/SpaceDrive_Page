@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <!-- TODO: Replace with your paper title and author names -->
+  <meta name="title" content="SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving">
+  <!-- TODO: Write a compelling 150-160 character description of your research -->
+  <meta name="description" content="End-to-end autonomous driving methods built on vision language models (VLMs) have undergone rapid development driven by their universal visual understanding and strong reasoning capabilities obtained from the large-scale pretraining. However, we find that current VLMs struggle to understand fine-grained 3D spatial relationships which is a fundamental requirement for systems interacting with the physical world. To address this issue, we propose SpaceDrive, a spatial-aware VLM-based driving framework that treats spatial information as explicit positional encodings (PEs) instead of textual digit tokens, enabling joint reasoning over semantic and spatial representations. SpaceDrive employs a universal positional encoder to all 3D coordinates derived from multi-view depth estimation, historical ego-states, and text prompts. These 3D PEs are first superimposed to augment the corresponding 2D visual tokens. Meanwhile, they serve as a task-agnostic coordinate representation, replacing the digit-wise numerical tokens as both inputs and outputs for the VLM. This mechanism enables the model to better index specific visual semantics in spatial reasoning and directly regress trajectory coordinates rather than generating digit-by-digit, thereby enhancing planning accuracy. Extensive experiments validate that SpaceDrive achieves state-of-the-art open-loop performance on the nuScenes dataset and the second-best Driving Score of 78.02 on the Bench2Drive closed-loop benchmark over existing VLM-based methods. Code will be released upon acceptance.">
+  <!-- TODO: Add 5-10 relevant keywords for your research area -->
+  <meta name="keywords" content="Visual Language Model, End-to-End Autonomous Driving, Spatial Awareness">
+  <!-- TODO: List all authors -->
+  <meta name="author" content="Peizheng Li, Zhenghao Zhang, David Holtz, Hang Yu, Yutong Yang, Yuzhi Lai, Rui Song, Andreas Geiger, Andreas Zell">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <!-- TODO: Replace with your institution or lab name -->
+  <meta property="og:site_name" content="Mercedes-Benz AG">
+  <!-- TODO: Same as paper title above -->
+  <meta property="og:title" content="SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving">
+  <!-- TODO: Same as description above -->
+  <meta property="og:description" content="End-to-end autonomous driving methods built on vision language models (VLMs) have undergone rapid development driven by their universal visual understanding and strong reasoning capabilities obtained from the large-scale pretraining. However, we find that current VLMs struggle to understand fine-grained 3D spatial relationships which is a fundamental requirement for systems interacting with the physical world. To address this issue, we propose SpaceDrive, a spatial-aware VLM-based driving framework that treats spatial information as explicit positional encodings (PEs) instead of textual digit tokens, enabling joint reasoning over semantic and spatial representations. SpaceDrive employs a universal positional encoder to all 3D coordinates derived from multi-view depth estimation, historical ego-states, and text prompts. These 3D PEs are first superimposed to augment the corresponding 2D visual tokens. Meanwhile, they serve as a task-agnostic coordinate representation, replacing the digit-wise numerical tokens as both inputs and outputs for the VLM. This mechanism enables the model to better index specific visual semantics in spatial reasoning and directly regress trajectory coordinates rather than generating digit-by-digit, thereby enhancing planning accuracy. Extensive experiments validate that SpaceDrive achieves state-of-the-art open-loop performance on the nuScenes dataset and the second-best Driving Score of 78.02 on the Bench2Drive closed-loop benchmark over existing VLM-based methods. Code will be released upon acceptance.">
+  <!-- TODO: Replace with your actual website URL -->
+  <meta property="og:url" content="https://zhenghao2519.github.io/SpaceDrive_Page">
+  <!-- TODO: Create a 1200x630px preview image and update path -->
+  <meta property="og:image" content="https://zhenghao2519.github.io/SpaceDrive_Page/static/images/teaser.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving - Research Preview">
+  <meta property="article:published_time" content="2025-11-25:00:00.000Z">
+  <meta property="article:author" content="Peizheng Li, Zhenghao Zhang, David Holtz, Hang Yu, Yutong Yang, Yuzhi Lai, Rui Song, Andreas Geiger, Andreas Zell">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="End-to-End Autonomous Driving">
+  <meta property="article:tag" content="Spatial Awareness">
+  <meta property="article:tag" content="Vision-Language Models">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving">
+  <meta name="citation_author" content="Li, Peizheng">
+  <meta name="citation_author" content="Zhang, Zhenghao">
+  <meta name="citation_author" content="Holtz, David">
+  <meta name="citation_author" content="Yu, Hang">
+  <meta name="citation_author" content="Yang, Yutong">
+  <meta name="citation_author" content="Lai, Yuzhi">
+  <meta name="citation_author" content="Song, Rui">
+  <meta name="citation_author" content="Geiger, Andreas">
+  <meta name="citation_author" content="Zell, Andreas">
+  <!-- <meta name="citation_publication_date" content="2025">
+  <meta name="citation_conference_title" content="IEEE/CVF International Conference on Computer Vision (ICCV)">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2504.10117.pdf"> -->
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <!-- TODO: Replace with your paper title and authors -->
+  <title>SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving</title>
+  
+  <!-- Favicon and App Icons -->
+   <!-- TODO: change icon -->
+  <link rel="icon" type="image/png" href="static/images/icon.png"> 
+  <link rel="apple-touch-icon" href="static/images/icon.png">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving",
+    "description": "End-to-end autonomous driving methods built on vision language models (VLMs) have undergone rapid development driven by their universal visual understanding and strong reasoning capabilities obtained from the large-scale pretraining. However, we find that current VLMs struggle to understand fine-grained 3D spatial relationships which is a fundamental requirement for systems interacting with the physical world. To address this issue, we propose SpaceDrive, a spatial-aware VLM-based driving framework that treats spatial information as explicit positional encodings (PEs) instead of textual digit tokens, enabling joint reasoning over semantic and spatial representations. SpaceDrive employs a universal positional encoder to all 3D coordinates derived from multi-view depth estimation, historical ego-states, and text prompts. These 3D PEs are first superimposed to augment the corresponding 2D visual tokens. Meanwhile, they serve as a task-agnostic coordinate representation, replacing the digit-wise numerical tokens as both inputs and outputs for the VLM. This mechanism enables the model to better index specific visual semantics in spatial reasoning and directly regress trajectory coordinates rather than generating digit-by-digit, thereby enhancing planning accuracy. Extensive experiments validate that SpaceDrive achieves state-of-the-art open-loop performance on the nuScenes dataset and the second-best Driving Score of 78.02 on the Bench2Drive closed-loop benchmark over existing VLM-based methods. Code will be released upon acceptance.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Peizheng Li",
+        "affiliation": [
+          {
+            "@type": "Organization",
+            "name": "Mercedes-Benz AG"
+          },
+          {
+            "@type": "Organization",
+            "name": "University of Tübingen"
+          }
+        ]
+      },
+      {
+        "@type": "Person",
+        "name": "Zhenghao Zhang",
+        "affiliation": [
+          {
+            "@type": "Organization",
+            "name": "Mercedes-Benz AG"
+          },
+          {
+            "@type": "Organization",
+            "name": "TU Munich"
+          }
+        ]
+      },
+      {
+        "@type": "Person",
+        "name": "David Holtz",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Mercedes-Benz AG"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Hang Yu",
+        "affiliation": [
+          {
+            "@type": "Organization",
+            "name": "Mercedes-Benz AG"
+          }
+          ,
+            {
+            "@type": "Organization",
+            "name": "Karlsruhe Institute of Technology"
+          }
+          ]
+      },
+      {
+        "@type": "Person",
+        "name": "Yutong Yang",
+        "affiliation": [
+          {
+            "@type": "Organization",
+            "name": "Mercedes-Benz AG"
+          },
+          {
+            "@type": "Organization",
+            "name": "University of Stuttgart"
+          }
+        ]
+      },
+      {
+        "@type": "Person",
+        "name": "Yuzhi Lai",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "University of Tübingen"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Rui Song",
+        "affiliation": [
+          {
+            "@type": "Organization",
+            "name": "TU Munich"
+          },
+          {
+            "@type": "Organization",
+            "name": "UCLA"
+          },
+        ]
+      },
+      {
+        "@type": "Person",
+        "name": "Andreas Geiger",
+        "affiliation": "affiliation": [
+          {
+            "@type": "Organization",
+            "name": "University of Tübingen"
+          },
+          {
+            "@type": "Organization",
+            "name": "Tübingen AI Center"
+          }
+        ]
+      },
+      {
+        "@type": "Person",
+        "name": "Andreas Zell",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "University of Tübingen"
+        }
+      }
+    ],
+    <!-- "datePublished": "2025",
+    "publisher": {
+      "@type": "Organization",
+      "name": "IEEE/CVF International Conference on Computer Vision (ICCV)"
+    }, -->
+    "url": "https://zhenghao2519.github.io/SpaceDrive_Page",
+    "image": "https://zhenghao2519.github.io/SpaceDrive_Page/static/images/teaser.png",
+    "keywords": ["Visual Language Model", "End-to-End Autonomous Driving", "Spatial Awareness"],
+    "abstract": "End-to-end autonomous driving methods built on vision language models (VLMs) have undergone rapid development driven by their universal visual understanding and strong reasoning capabilities obtained from the large-scale pretraining. However, we find that current VLMs struggle to understand fine-grained 3D spatial relationships which is a fundamental requirement for systems interacting with the physical world. To address this issue, we propose SpaceDrive, a spatial-aware VLM-based driving framework that treats spatial information as explicit positional encodings (PEs) instead of textual digit tokens, enabling joint reasoning over semantic and spatial representations. SpaceDrive employs a universal positional encoder to all 3D coordinates derived from multi-view depth estimation, historical ego-states, and text prompts. These 3D PEs are first superimposed to augment the corresponding 2D visual tokens. Meanwhile, they serve as a task-agnostic coordinate representation, replacing the digit-wise numerical tokens as both inputs and outputs for the VLM. This mechanism enables the model to better index specific visual semantics in spatial reasoning and directly regress trajectory coordinates rather than generating digit-by-digit, thereby enhancing planning accuracy. Extensive experiments validate that SpaceDrive achieves state-of-the-art open-loop performance on the nuScenes dataset and the second-best Driving Score of 78.02 on the Bench2Drive closed-loop benchmark over existing VLM-based methods. Code will be released upon acceptance.",
+    "citation": "",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "mainEntity": {
+      "@type": "WebPage",
+      "@id": "https://zhenghao2519.github.io/SpaceDrive_Page"
+    },
+    "about": [
+      {
+        "@type": "Thing", 
+        "name": "Spatial Awareness"
+      },
+      {
+        "@type": "Thing", 
+        "name": "End-to-End Autonomous Driving"
+      },
+      {
+        "@type": "Thing",
+        "name": "Vision-Language Models"
+      }      
+    ]
+  }
+  </script>
+  
+  <!-- Website/Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Mercedes-Benz AG Research",
+    "url": "https://www.mercedes-benz.com",
+    "logo": "https://zhenghao2519.github.io/SpaceDrive_Page/static/images/icon.png",
+    "sameAs": [
+      "https://github.com/zhenghao2519",
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Me">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Works from Our Lab</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <!-- TODO: Replace with your lab's related works -->
+        <a href="https://arxiv.org/abs/2306.10761" class="work-item" target="_blank">
+          <div class="work-info">
+            <!-- TODO: Replace with actual paper title -->
+            <h5>PowerBEV: A Powerful Yet Lightweight Framework for Instance Prediction in Bird's-Eye View</h5>
+            <!-- TODO: Replace with brief description -->
+            <p></p>
+            <!-- TODO: Replace with venue and year -->
+            <span class="work-venue">IJCAI 2023</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <!-- TODO: Add more related works or remove extra items -->
+        <!-- <a href="https://arxiv.org/abs/2407.01702" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>SeFlow: A Self-Supervised Scene Flow Method in Autonomous Driving</h5>
+            <p></p>
+            <span class="work-venue">ECCV 2024</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a> -->
+        <!-- <a href="https://arxiv.org/abs/2504.03258" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>TQD-Track: Temporal Query Denoising for 3D Multi-Object Tracking</h5>
+            <p></p>
+            <span class="work-venue">arXiv:2504.03258</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a> -->
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- TODO: Replace with your paper title -->
+            <h1 class="title is-1 publication-title">SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- TODO: Replace with your paper authors and their personal links -->
+              <span class="author-block">
+                <a href="https://edwardleelpz.github.io/" target="_blank">Peizheng Li</a><sup>1,2*</sup>,</span>
+                <span class="author-block">
+                  <a href="https://zhenghao2519.github.io/" target="_blank">Zhenghao Zhang</a><sup>1,4*</sup>,</span>
+                  <span class="author-block">
+                    <a href="https://scholar.google.com/citations?user=yEY9n1EAAAAJ&hl=en" target="_blank">Hang Yu</a><sup>1,5</sup>,</span>
+                    <span class="author-block">
+                      <a href="https://scholar.google.com/citations?user=kg9OvU0AAAAJ&hl=en" target="_blank">Yutong Yang</a><sup>1,6</sup>,</span>
+                        <span class="author-block">
+                          <a href="https://scholar.google.com/citations?user=gf09DbwAAAAJ&hl=en&oi=sra" target="_blank">David Holtz</a><sup>1</sup>,</span>
+                          <span class="author-block">
+                            <a href="https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/kognitive-systeme/the-chair/staff/yuzhi-lai/" target="_blank">Yuzhi Lai</a><sup>1,5</sup>,</span>
+                            <span class="author-block">
+                              <a href="https://rruisong.github.io/" target="_blank">Rui Song</a><sup>1,6</sup>,</span>
+                              <span class="author-block">
+                                <a href="https://www.cvlibs.net/" target="_blank">Andreas Geiger</a><sup>1</sup>,</span>
+                                <span class="author-block">
+                                  <a href="https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/kognitive-systeme/the-chair/staff/prof-dr-andreas-zell/" target="_blank">Andreas Zell</a><sup>1,2,3</sup>,</span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <!-- TODO: Replace with your institution and conference/journal info -->
+                    <span class="author-block"><sup>1</sup>Mercedes-Benz AG  <sup>2</sup>University of Tübingen  <sup>3</sup>Tübingen AI Center <br><sup>4</sup>TU Munich  <sup>5</sup>Karlsruhe Institute of Technology  <sup>6</sup>University of Stuttgart <sup>7</sup>UCLA <br><sup>*</sup> <small>Equal contribution</small></span>
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- TODO: Update with your arXiv paper ID -->
+                      <span class="link-block">
+                        <a href="" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+                    <!-- TODO: Add your supplementary material PDF or remove this section -->
+                    <span class="link-block">
+                      <a href="" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fas fa-file-pdf"></i>
+                      </span>
+                      <span>Supplementary</span>
+                    </a>
+                  </span>
+
+                  <!-- TODO: Replace with your GitHub repository URL -->
+                  <span class="link-block">
+                    <a href="https://github.com/zhenghao2519/SpaceDrive" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- TODO: Update with your arXiv paper ID -->
+                <span class="link-block">
+                  <a href="" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Teaser figure -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body has-text-centered">
+      <!-- Teaser image -->
+      <figure>
+        <img src="static/images/teaser.png" alt="AGO Teaser Figure" loading="lazy" style="width:100%;">
+        <figcaption style="margin-top:10px; font-size:16px; color:#666;
+                   text-align:justify; text-justify:inter-word;">
+          Spatial awareness in VLM-based end-to-end autonomous driving. (a) Constrained by insufficient 3D pre-training and discrete
+          token-wise encoding, existing end-to-end planners based on the VLM struggle to precisely ground, associate, and predict 3D spatial positions,
+          limiting their planning capabilities. (b) Our proposed SpaceDrive planner introduces a unified 3D coordinate encoding to replace the original
+          VLM’s textual digit tokens and augment visual features, achieving explicit association with 2D perspective semantics to enhance joint
+          spatial reasoning for E2E planning. Compared to current VLM-based methods, it achieves state-of-the-art driving capability in the nuScenes
+          open-loop evaluation and the second-best driving performance in the Bench2Drive closed-loop simulation
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+<!-- End teaser figure -->
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <!-- TODO: Replace with your paper abstract -->
+          <p>
+            End-to-end autonomous driving methods built on vision language models (VLMs) have undergone rapid development driven by their universal visual understanding and strong reasoning capabilities obtained from the large-scale pretraining. However, we find that current VLMs struggle to understand fine-grained 3D spatial relationships which is a fundamental requirement for systems interacting with the physical world. To address this issue, we propose SpaceDrive, a spatial-aware VLM-based driving framework that treats spatial information as explicit positional encodings (PEs) instead of textual digit tokens, enabling joint reasoning over semantic and spatial representations. SpaceDrive employs a universal positional encoder to all 3D coordinates derived from multi-view depth estimation, historical ego-states, and text prompts. These 3D PEs are first superimposed to augment the corresponding 2D visual tokens. Meanwhile, they serve as a task-agnostic coordinate representation, replacing the digit-wise numerical tokens as both inputs and outputs for the VLM. This mechanism enables the model to better index specific visual semantics in spatial reasoning and directly regress trajectory coordinates rather than generating digit-by-digit, thereby enhancing planning accuracy. Extensive experiments validate that SpaceDrive achieves state-of-the-art open-loop performance on the nuScenes dataset and the second-best Driving Score of 78.02 on the Bench2Drive closed-loop benchmark over existing VLM-based methods. Code will be released upon acceptance. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Motivation section -->
+ 
+<!-- <section class="section">
+  <div class="container is-max-desktop has-text-centered">
+
+    <h2 class="title is-3" style="margin-bottom: 1rem;">
+      Motivation
+    </h2>
+
+    <p style="
+      margin-top:1rem;
+      font-size:16px;
+      text-align:justify;
+      text-justify:inter-word;
+      line-height:1.6;
+      padding-left:1.5em;
+    ">
+      3D semantic occupancy prediction is central to scene understanding for autonomous driving, yet traditional approaches:<br>
+      &nbsp;&nbsp;▸ heavily rely on extensive manual 3D annotations<br>
+      &nbsp;&nbsp;▸ are constrained by predefined closed semantic spaces<br>
+      Existing VLM-based methods:<br>
+      &nbsp;&nbsp;▸ rely on fixed-class pseudo-labels → struggles to predict novel classes<br>
+      &nbsp;&nbsp;▸ base on image-text alignment → suffers from severe mismatches due to issues like modality gaps<br><br>
+    </p>
+
+    <figure>
+      <img src="static/images/modality_gap.png"
+           alt="Modality Gaps"
+           loading="lazy"
+           style="width:60%;">
+    </figure>
+
+    <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
+      <strong>Goal:</strong> Enable open-world 3D semantic occupancy prediction with flexible adaptation to unknowns.
+    </p>
+
+  </div>
+</section> -->
+
+<hr style="margin:3rem 0; border-top:1px solid #ddd;">
+
+<!-- Architecture section -->
+<section class="section">
+  <div class="container is-max-desktop has-text-centered">
+
+    <!-- Section Title -->
+    <h2 class="title is-3" style="margin-bottom: 1rem;">
+      Method
+    </h2>
+
+    <!-- Text -->
+    <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
+      SpaceDrive is a spatial-aware framework that enhances end-to-end planning through explicit injection of 3D information into the VLM architecture.
+      <!-- Surrounding images are first encoded by a visual encoder, and then aligned to the language model's semantic space via a projector. -->
+      Surrounding images are processed by a depth estimator to obtain absolute depths, which are converted into 3D positional encodings through a universal PE encoder. 
+      The visual tokens and their 3D PEs are then added element-wise, yielding spatially-aware visual tokens that serve as inputs to the VLM.<br><br>
+      Besides, text prompts for various reasoning tasks are also fed into the VLM as text token inputs. 
+      Notably, coordinates within these prompts are processed separately by the same PE encoder to generate universal PEs, replacing the corresponding original text tokens. <br><br>
+      <!-- At the output stage, coordinate-related outputs are recognized and decoded by a dedicated PE decoder to produce accurate 3D coordinates for precise trajectory planning. -->
+    </p>  
+    <!-- Image -->
+    <figure>
+      <img src="static/images/architecture.png"
+           alt="architecture"
+           loading="lazy"
+           style="width:100%;">
+      <figcaption style="margin-top:10px; font-size:16px; color:#666;">
+          SpaceDrive Architecture
+        </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<hr style="margin:3rem 0; border-top:1px solid #ddd;">
+
+
+
+<!-- Quantitative results section -->
+<section class="section">
+  <div class="container is-max-desktop has-text-centered">
+
+    <!-- Section Title -->
+    <h2 class="title is-3" style="margin-bottom: 1rem;">
+      Quantitative Results
+    </h2>
+
+    <!-- Image -->
+    <figure>
+      <img src="static/images/openloop_eval.png"
+           alt="Closed-world benchmark"
+           loading="lazy"
+           style="width:100%;">
+      <figcaption style="margin-top:10px; font-size:16px; color:#666;">
+          Open-loop planning results on nuScenes.
+        </figcaption>
+    </figure>
+
+    <!-- Text -->
+    <!-- <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
+      In closed-world scenarios, AGO demonstrates substantial improvements across both static and dynamic categories.<br><br>
+    </p> -->
+
+    <!-- Image -->
+    <figure>
+      <img src="static/images/closeloop_eval.png"
+           alt="Open-world Benchmark"
+           loading="lazy"
+           style="width:60%;">
+      <figcaption style="margin-top:10px; font-size:16px; color:#666;">
+          Closed-loop planning results on Bench2Drive.
+        </figcaption>
+    </figure>
+
+    <!-- Text -->
+    <!-- <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
+      In open-world scenes, AGO exhibits superior zero-shot performance while rapidly adapting to novel categories with only a few shots.
+    </p> -->
+
+
+  </div>
+</section>
+
+<hr style="margin:3rem 0; border-top:1px solid #ddd;">
+
+<!-- Qualitative results section -->
+<section class="section">
+  <div class="container is-max-desktop has-text-centered">
+
+<!-- Section Title -->
+<h2 class="title is-3" style="margin-bottom: 1rem;">
+  Qualitative Results
+</h2>
+    
+<!-- Videos -->
+
+<style>
+.video-container-wrapper {
+  background-color: #f0f0f0; 
+  padding: 20px; 
+  border-radius: 5px; 
+}
+
+.video-container-wrapper video {
+  width: 100%; 
+  border-radius: 8px; 
+}
+
+.columns {
+  margin-bottom: 20px; 
+}
+
+.background-container {
+  background-color: #f0f0f0; 
+  padding: 30px; 
+  border-radius: 15px; 
+}
+</style>
+
+<div class="container fixed-width">
+
+
+<div class="container background-container">
+
+  <!-- Row 1 (3 videos) -->
+  <div class="columns is-multiline is-variable is-2 is-centered">
+    <div class="column is-one-third">
+      <h3 class="title is-size-6 has-text-centered">Construction site blocks one direction of a two-lane road. </h3>
+      <div class="content">
+        <video class="video-container" autoplay controls muted loop playsinline>
+          <source src="static/videos/vis_1_upload.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="column is-one-third">
+      <h3 class="title is-size-6 has-text-centered">A kid suddenly runs out from behind a parked car.</h3>
+      <div class="content">
+        <video class="video-container" autoplay controls muted loop playsinline>
+          <source src="static/videos/vis_2_upload.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="column is-one-third">
+      <h3 class="title is-size-6 has-text-centered">Give way to ambulance coming from behind.</h3>
+      <div class="content">
+        <video class="video-container" autoplay controls muted loop playsinline>
+          <source src="static/videos/vis_3_upload.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2 (3 videos) -->
+  <div class="columns is-multiline is-variable is-2 is-centered">
+    <div class="column is-one-third">
+      <h3 class="title is-size-6 has-text-centered">Wait for cyclist crossing road right after turning.</h3>
+      <div class="content">
+        <video class="video-container" autoplay controls muted loop playsinline>
+          <source src="static/videos/vis_4_upload.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="column is-one-third">
+      <h3 class="title is-size-6 has-text-centered">Car door of a parked car blocks the lane.</h3>
+      <div class="content">
+        <video class="video-container" autoplay controls muted loop playsinline>
+          <source src="static/videos/vis_5_upload.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <div class="column is-one-third">
+      <h3 class="title is-size-6 has-text-centered">Navigate around cyclists in heavy traffic at night.</h3>
+      <div class="content">
+        <video class="video-container" autoplay controls muted loop playsinline>
+          <source src="static/videos/vis_6_upload.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div style="height: 100px;"></div>
+
+<!-- Image -->
+<figure>
+  <img src="static/images/static_vis.png"
+        alt="Closed-world Visualization"
+        loading="lazy"
+        style="width:100%;">
+  <figcaption style="margin-top:10px; font-size:16px; color:#666;">
+      Closed-loop Visualization
+    </figcaption>
+</figure>
+
+<p style="margin-top:2rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
+</p>
+
+<div class="container fixed-width">
+
+
+<!-- Paper poster -->
+<!-- <section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title">Poster</h2>
+
+      <iframe  src="static/pdfs/AGO_iccv25_poster.pdf" width="100%" height="550">
+          </iframe>
+        
+      </div>
+    </div>
+  </section> -->
+<!--End paper poster -->
+
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code></code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
