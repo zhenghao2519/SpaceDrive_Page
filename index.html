@@ -49,9 +49,9 @@
   <meta name="citation_author" content="Song, Rui">
   <meta name="citation_author" content="Geiger, Andreas">
   <meta name="citation_author" content="Zell, Andreas">
-  <!-- <meta name="citation_publication_date" content="2025">
-  <meta name="citation_conference_title" content="IEEE/CVF International Conference on Computer Vision (ICCV)">
-  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2504.10117.pdf"> -->
+  <meta name="citation_publication_date" content="2025">
+  <!-- <meta name="citation_conference_title" content="IEEE/CVF International Conference on Computer Vision (ICCV)"> -->
+  <meta name="citation_pdf_url" content="https://arxiv.org/abs/2512.10719">
   
   <!-- Additional SEO -->
   <meta name="theme-color" content="#2563eb">
@@ -292,31 +292,38 @@
       </div>
       <div class="works-list">
         <!-- TODO: Replace with your lab's related works -->
-        <!-- <a href="https://arxiv.org/abs/2306.10761" class="work-item" target="_blank">
+         <a href="https://edwardleelpz.github.io/AGO_Page/" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>AGO: Adaptive Grounding for Open World 3D Occupancy Prediction</h5>
+            <p></p>
+            <span class="work-venue">ICCV 2025</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <a href="https://arxiv.org/abs/2306.10761" class="work-item" target="_blank">
           <div class="work-info">
             <h5>PowerBEV: A Powerful Yet Lightweight Framework for Instance Prediction in Bird's-Eye View</h5>
             <p></p>
             <span class="work-venue">IJCAI 2023</span>
           </div>
           <i class="fas fa-external-link-alt"></i>
-        </a> -->
-        <!-- TODO: Add more related works or remove extra items -->
-        <!-- <a href="https://arxiv.org/abs/2407.01702" class="work-item" target="_blank">
+        </a>
+        <a href="https://arxiv.org/abs/2407.01702" class="work-item" target="_blank">
           <div class="work-info">
             <h5>SeFlow: A Self-Supervised Scene Flow Method in Autonomous Driving</h5>
             <p></p>
             <span class="work-venue">ECCV 2024</span>
           </div>
           <i class="fas fa-external-link-alt"></i>
-        </a> -->
-        <!-- <a href="https://arxiv.org/abs/2504.03258" class="work-item" target="_blank">
+        </a>
+        <a href="https://arxiv.org/abs/2504.03258" class="work-item" target="_blank">
           <div class="work-info">
             <h5>TQD-Track: Temporal Query Denoising for 3D Multi-Object Tracking</h5>
             <p></p>
             <span class="work-venue">arXiv:2504.03258</span>
           </div>
           <i class="fas fa-external-link-alt"></i>
-        </a> -->
+        </a>
       </div>
     </div>
   </div>
@@ -359,7 +366,7 @@
                     <div class="publication-links">
                          <!-- TODO: Update with your arXiv paper ID -->
                       <span class="link-block">
-                        <a href="" target="_blank"
+                        <a href="static/pdfs/SpaceDrive.pdf" target="_blank"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
@@ -370,7 +377,7 @@
 
                     <!-- TODO: Add your supplementary material PDF or remove this section -->
                     <span class="link-block">
-                      <a href="" target="_blank"
+                      <a href="static/pdfs/SpaceDrive_Supplementary_Materials.pdf" target="_blank"
                       class="external-link button is-normal is-rounded is-dark">
                       <span class="icon">
                         <i class="fas fa-file-pdf"></i>
@@ -392,7 +399,7 @@
 
                 <!-- TODO: Update with your arXiv paper ID -->
                 <span class="link-block">
-                  <a href="" target="_blank"
+                  <a href="https://arxiv.org/abs/2512.10719" target="_blank"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="ai ai-arxiv"></i>
@@ -487,7 +494,7 @@
   </div>
 </section> -->
 
-<hr style="margin:3rem 0; border-top:1px solid #ddd;">
+<!-- <hr style="margin:3rem 0; border-top:1px solid #ddd;"> -->
 
 <!-- Architecture section -->
 <section class="section">
@@ -542,14 +549,14 @@
            loading="lazy"
            style="width:100%;">
       <figcaption style="margin-top:10px; font-size:16px; color:#666;">
-          Open-loop planning results on nuScenes.
+          Open-loop planning results on nuScenes benchmark.
         </figcaption>
     </figure>
 
     <!-- Text -->
-    <!-- <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
-      In closed-world scenarios, AGO demonstrates substantial improvements across both static and dynamic categories.<br><br>
-    </p> -->
+    <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
+       SpaceDrive achieves state-of-the-art performance among all VLM-based methods in open-loop planning on nuScenes.<br><br>
+    </p>
     <div style="height: 50px;"></div>
 
     <!-- Image -->
@@ -557,16 +564,16 @@
       <img src="static/images/closeloop_eval.png"
            alt="Open-world Benchmark"
            loading="lazy"
-           style="width:60%;">
+           style="width:50%;">
       <figcaption style="margin-top:10px; font-size:16px; color:#666;">
-          Closed-loop planning results on Bench2Drive.
+          Closed-loop planning results on Bench2Drive benchmark.
         </figcaption>
     </figure>
 
     <!-- Text -->
-    <!-- <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
-      In open-world scenes, AGO exhibits superior zero-shot performance while rapidly adapting to novel categories with only a few shots.
-    </p> -->
+    <p style="margin-top:1rem; font-size:16px; text-align:justify; text-justify:inter-word; line-height:1.6;">
+       SpaceDrive achieves a Driving Score of 78.02 (2nd-best in VLM-based planners) in closed-loop simulation on Bench2Drive.
+    </p>
 
 
   </div>
@@ -712,7 +719,7 @@
 
 
 <!--BibTex citation -->
-  <!-- <section class="section" id="BibTeX">
+  <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <div class="bibtex-header">
         <h2 class="title">BibTeX</h2>
@@ -721,9 +728,14 @@
           <span class="copy-text">Copy</span>
         </button>
       </div>
-      <pre id="bibtex-code"><code></code></pre>
+      <pre id="bibtex-code"><code>@article{li2025spacedrive,
+  title={SpaceDrive: Infusing Spatial Awareness into VLM-based Autonomous Driving},
+  author={Li, Peizheng and Zhang, Zhenghao and Holtz, David and Yu, Hang and Yang, Yutong and Lai, Yuzhi and Song, Rui and Geiger, Andreas and Zell, Andreas},
+  journal={arXiv preprint arXiv:2512.10719},
+  year={2025}
+}</code></pre>
     </div>
-</section> -->
+</section>
 <!--End BibTex citation -->
 
 
